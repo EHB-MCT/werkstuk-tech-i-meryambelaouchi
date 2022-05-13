@@ -1,1 +1,54 @@
-Zet hier de arduino code
+const int trigPin = 9;
+const int echoPin = 10;
+int redPin = 11;
+int greenPin = 4;
+int bluePin = 5;
+
+long duration;
+int distance;
+int safetyDistance;
+
+
+void setup() {
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT); 
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  Serial.begin(9600); 
+
+}
+
+void loop() {
+
+  
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+ 
+  duration = pulseIn(echoPin, HIGH);
+
+  distance = duration * 0.034 / 2;
+
+  safetyDistance = distance;
+  if (safetyDistance <= 5) {
+    setColor(255, 255, 0);
+  } else {
+    setColor(1, 0, 0);
+  }
+
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+
+}
+void setColor(int red_light_value, int green_light_value, int blue_light_value)
+{
+  analogWrite(redPin, red_light_value);
+  analogWrite(greenPin, green_light_value);
+  analogWrite(bluePin, blue_light_value);
+}
